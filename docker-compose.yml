@@ -1,0 +1,80 @@
+version: "3.8"
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+      args:
+        PHP_MODE: production
+    container_name: ip_management_php
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/ip-management-backend
+    depends_on:
+      - mysql
+      - httpd
+      - minio
+      - mailhog
+    networks:
+      - ip_management_network
+
+  httpd:
+    build:
+      context: .
+      dockerfile: ./docker/httpd/Dockerfile
+    container_name: ip_management_httpd
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/ip-management-backend
+      - ./docker/httpd/vhosts.conf:/etc/apache2/sites-available/vhosts.conf
+    depends_on:
+      - mysql
+      - minio
+      - mailhog
+    networks:
+      - ip_management_network
+
+  mysql:
+    image: mysql:8.0.36
+    container_name: ip_management_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ip_management
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: ipsuser
+      MYSQL_PASSWORD: password
+    volumes:
+      - ip_management_database:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    networks:
+      - ip_management_network
+
+  minio:
+    image: minio/minio:RELEASE.2022-11-11T03-44-20Z
+    ports:
+      - "9001:9001"
+    container_name: ip_management_minio
+    restart: unless-stopped
+    environment:
+      - MINIO_ROOT_USER=user
+      - MINIO_ROOT_PASSWORD=password
+    volumes:
+      - "./storage/app/s3_data:/tmp/s3_data"
+    command: server /tmp/s3_data --console-address ":9001"
+    networks:
+      - ip_management_network
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: ip_managementmailhog
+    restart: unless-stopped
+    networks:
+      - ip_management_network
+
+networks:
+  ip_management_network:
+    driver: bridge
+
+volumes:
+  ip_management_database:

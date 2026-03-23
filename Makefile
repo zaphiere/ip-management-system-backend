@@ -1,0 +1,22 @@
+HTTPD_CONTAINER = ip_management_httpd
+PHP_CONTAINER = ip_management_php
+REQUIREMENTS = docker docker-compose vi npm node
+check:
+	$(foreach REQUIREMENT, $(REQUIREMENTS), \
+		$(if $(shell command -v $(REQUIREMENT) 2> /dev/null), \
+			$(info `$(REQUIREMENT)` has been found. OK!), \
+			$(error Please install `$(REQUIREMENT)` before running setup.) \
+		) \
+	)
+setup: check
+	cp ./.env.local ./.env
+	cp docker-compose.dev.yml docker-compose.override.yml
+	vi ./.env
+	vi docker-compose.override.yml
+	docker-compose up -d --build
+	docker exec $(HTTPD_CONTAINER) chmod -R 777 /var/www/ip-management-backend/storage
+	docker exec $(PHP_CONTAINER) composer install --prefer-dist
+	docker exec $(PHP_CONTAINER) php artisan key:generate
+	docker exec $(PHP_CONTAINER) php artisan session:table
+	docker exec $(PHP_CONTAINER) php artisan migrate
+	make clear-cache
