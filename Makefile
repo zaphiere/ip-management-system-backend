@@ -17,6 +17,14 @@ setup: check
 	docker exec $(HTTPD_CONTAINER) chmod -R 777 /var/www/ip-management-backend/storage
 	docker exec $(PHP_CONTAINER) composer install --prefer-dist
 	docker exec $(PHP_CONTAINER) php artisan key:generate
-	docker exec $(PHP_CONTAINER) php artisan session:table
-	docker exec $(PHP_CONTAINER) php artisan migrate
+	make setup-table
 	make clear-cache
+
+setup-table:
+	docker exec $(PHP_CONTAINER) php artisan migrate:fresh --seed
+
+migrate:
+	docker exec $(PHP_CONTAINER) php artisan migrate
+
+bash:
+	docker exec -it $(PHP_CONTAINER) bash

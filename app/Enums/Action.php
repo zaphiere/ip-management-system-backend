@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Enums;
+
+enum Action: string
+{
+    /**
+     * LOGIN
+     */
+    case LOGIN = 'LOGIN'; 
+
+    /**
+     * LOGOUT
+     */
+    case LOGOUT = 'LOGOUT'; 
+
+    /**
+     * CREATE_IP
+     */
+    case UPDATE_IP = 'UPDATE_IP'; 
+
+    /**
+     * DELETE_IP
+     */
+    case DELETE_IP = 'DELETE_IP';
+}
+
