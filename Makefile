@@ -14,10 +14,11 @@ setup: check
 	vi ./.env
 	vi docker-compose.override.yml
 	docker-compose up -d --build
-	docker exec $(HTTPD_CONTAINER) chmod -R 777 /var/www/ip-management-backend/storage
+	docker exec $(HTTPD_CONTAINER) chmod -R 775 /var/www/ip-management-backend/storage
 	docker exec $(PHP_CONTAINER) composer install --prefer-dist
 	docker exec $(PHP_CONTAINER) php artisan key:generate
 	make setup-table
+    make setup-jwt
 	make clear-cache
 
 setup-table:
@@ -28,3 +29,7 @@ migrate:
 
 bash:
 	docker exec -it $(PHP_CONTAINER) bash
+
+setup-jwt:
+    docker exec $(PHP_CONTAINER) php artisan vendor:publish --provider="PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider"
+    docker exec $(PHP_CONTAINER) php artisan jwt:secret
