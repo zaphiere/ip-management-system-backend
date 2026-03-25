@@ -11,7 +11,7 @@ class ViewIpAddressController extends Controller
     /**
      * ViewIpAddressService instance
      *
-     * @var \App\Service\IpRecord\ViewIpAddressService $viewIpAddressService
+     * @var \App\Services\IpRecord\ViewIpAddressService $viewIpAddressService
      */
     protected ViewIpAddressService $viewIpAddressService;
 
@@ -21,5 +21,15 @@ class ViewIpAddressController extends Controller
     public function __construct(ViewIpAddressService $viewIpAddressService)
     {
         $this->viewIpAddressService = $viewIpAddressService;
+    }
+
+    public function list()
+    {
+        return response()->json('list');
+    }
+
+    public function view()
+    {
+        return response()->json('view');
     }
 }

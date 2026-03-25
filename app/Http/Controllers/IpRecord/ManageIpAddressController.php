@@ -11,7 +11,7 @@ class ManageIpAddressController extends Controller
     /**
      * ManageIpAddressService instance
      *
-     * @var \App\Service\IpRecord\ManageIpAddressService $manageIpAddressService
+     * @var \App\Services\IpRecord\ManageIpAddressService $manageIpAddressService
      */
     protected ManageIpAddressService $manageIpAddressService;
 
@@ -21,5 +21,20 @@ class ManageIpAddressController extends Controller
     public function __construct(ManageIpAddressService $manageIpAddressService)
     {
         $this->manageIpAddressService = $manageIpAddressService;
+    }
+
+    public function create()
+    {
+        return response()->json('create');
+    }
+
+    public function edit()
+    {
+        return response()->json('edit');
+    }
+
+    public function delete()
+    {
+        return response()->json('delete');
     }
 }

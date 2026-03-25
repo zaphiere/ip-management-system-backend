@@ -22,4 +22,14 @@ class IpAuditLogController extends Controller
     {
         $this->ipAuditLogService = $ipAuditLogService;
     }
+
+    public function list()
+    {
+        return response()->json('list');
+    }
+
+    public function view()
+    {
+        return response()->json('view');
+    }
 }

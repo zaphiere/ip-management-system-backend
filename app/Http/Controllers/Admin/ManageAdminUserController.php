@@ -22,4 +22,9 @@ class ManageAdminUserController extends Controller
     {
         $this->manageAdminUserService = $manageAdminUserService;
     }
+
+    public function create()
+    {
+        return response()->json('Register');
+    }
 }

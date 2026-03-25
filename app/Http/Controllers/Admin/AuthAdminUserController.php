@@ -22,4 +22,14 @@ class AuthAdminUserController extends Controller
     {
         $this->authAdminUserService = $authAdminUserService;
     }
+
+    public function login()
+    {
+        return response()->json('login');
+    }
+
+    public function logout()
+    {
+        return response()->json('logout');
+    }
 }

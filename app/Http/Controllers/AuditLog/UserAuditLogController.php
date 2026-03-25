@@ -22,4 +22,14 @@ class UserAuditLogController extends Controller
     {
         $this->userAuditLogService = $userAuditLogService;
     }
+
+    public function list()
+    {
+        return response()->json('list');
+    }
+
+    public function view()
+    {
+        return response()->json('view');
+    }
 }
