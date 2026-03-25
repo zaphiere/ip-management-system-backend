@@ -26,7 +26,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected function casts(): array
     {
-    return [
+        return [
             'role' => Role::class,
             'password' => 'hashed',
             'created_at' => 'datetime',
