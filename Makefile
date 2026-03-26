@@ -15,10 +15,12 @@ setup: check
 	vi docker-compose.override.yml
 	docker-compose up -d --build
 	docker exec $(HTTPD_CONTAINER) chmod -R 775 /var/www/ip-management-backend/storage
+	docker exec $(PHP_CONTAINER) chown -R www-data:www-data /var/www/ip-management-backend/storage /var/www/ip-management-backend/bootstrap/cache
+	docker exec $(PHP_CONTAINER) chmod -R 775 /var/www/ip-management-backend/storage /var/www/ip-management-backend/bootstrap/cache
 	docker exec $(PHP_CONTAINER) composer install --prefer-dist
 	docker exec $(PHP_CONTAINER) php artisan key:generate
 	make setup-table
-    make setup-jwt
+	make setup-jwt
 	make clear-cache
 
 setup-table:
@@ -31,5 +33,13 @@ bash:
 	docker exec -it $(PHP_CONTAINER) bash
 
 setup-jwt:
-    docker exec $(PHP_CONTAINER) php artisan vendor:publish --provider="PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider"
-    docker exec $(PHP_CONTAINER) php artisan jwt:secret
+	docker exec $(PHP_CONTAINER) php artisan vendor:publish --provider="PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider"
+	docker exec $(PHP_CONTAINER) php artisan jwt:secret
+
+clear-cache:
+	docker exec ${PHP_CONTAINER} php artisan optimize:clear
+	docker exec ${PHP_CONTAINER} php artisan optimize
+	docker exec ${PHP_CONTAINER} php artisan cache:clear
+	docker exec ${PHP_CONTAINER} php artisan config:clear
+	docker exec ${PHP_CONTAINER} php artisan route:clear
+	docker exec ${PHP_CONTAINER} php artisan view:clear

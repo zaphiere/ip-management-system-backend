@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('action', 255);
             $table->string('entity_type', 255);
             $table->unsignedBigInteger('entity_id');
-            $table->json('old_content');
-            $table->json('new_content');
+            $table->json('old_content')->nullable();
+            $table->json('new_content')->nullable();
             $table->timestamp('created_at');
+            $table->timestamp('updated_at');
 
             // Indexes
             $table->index('id');

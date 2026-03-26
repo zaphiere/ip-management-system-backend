@@ -15,19 +15,18 @@ use App\Http\Controllers\IpRecord\{
 };
 use Illuminate\Support\Facades\Route;
 
-// Route::post('/register', [AuthAdminUserController::class, 'register']);
-
 // Authentication Routes
 Route::prefix('')
     ->name('auth.')
     ->group(function () {
         Route::post('/login', [AuthAdminUserController::class, 'login'])->name('login');
-        Route::post('/logout', [AuthAdminUserController::class, 'logout'])->name('logout');
+        Route::post('/logout', [AuthAdminUserController::class, 'logout'])->name('logout')->middleware('auth:api');
     });
 
 // Manage Admin Accounts Routes
 Route::prefix('users')
     ->name('users.')
+    ->middleware('auth:api')
     ->group(function () {
         Route::post('/create', [ManageAdminUserController::class, 'create'])->name('create');
     });
@@ -35,6 +34,7 @@ Route::prefix('users')
 // Audit Log Routes
 Route::prefix('audit-log')
     ->name('audit-log.')
+    ->middleware('auth:api')
     ->group(function () {
 
         // Create Logs
@@ -61,6 +61,7 @@ Route::prefix('audit-log')
 // IP Record Routes
 Route::prefix('ip-record')
     ->name('ip-record.')
+    ->middleware('auth:api')
     ->group(function () {
 
         // View Ip Addresses

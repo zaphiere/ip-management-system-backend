@@ -21,4 +21,16 @@ class AuditLogRepository implements AuditLogInterface
     {
         $this->model = new AuditLog();
     }
+
+    /**
+     * Create Audit Log
+     *
+     * @param array $data
+     *
+     * @return mixed
+     */
+    public function create(array $data)
+    {
+        return $this->model->create($data);
+    }
 }
