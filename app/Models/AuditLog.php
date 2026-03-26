@@ -6,6 +6,7 @@ use App\Enums\{
     Action,
     EntityType
 };
+use Carbon\Traits\Timestamp;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,10 +21,14 @@ class AuditLog extends Model
      */
     protected $fillable = [
         'user_id',
+        'session_id',
         'action',
         'entity_type',
         'entity_id',
-        'description',
+        'old_content',
+        'new_content',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -41,5 +46,7 @@ class AuditLog extends Model
     protected $casts = [
         'action' => Action::class,
         'entity_type' => EntityType::class,
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 }
