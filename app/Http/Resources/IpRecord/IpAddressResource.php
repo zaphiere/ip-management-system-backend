@@ -18,6 +18,7 @@ class IpAddressResource extends JsonResource
     {
         return [
             'id' => $this->id ?? '',
+            'ip_address' => $this->ip_address ?? '',
             'label' => $this->label ?? '',
             'comment_full' => $this->comment ?? '',
             'comment_truncate' => $this->resource->comment
