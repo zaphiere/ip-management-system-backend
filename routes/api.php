@@ -20,6 +20,7 @@ Route::prefix('')
     ->name('auth.')
     ->group(function () {
         Route::post('/login', [AuthAdminUserController::class, 'login'])->name('login');
+        Route::post('/refresh', [AuthAdminUserController::class, 'refresh'])->name('refresh');
         Route::post('/logout', [AuthAdminUserController::class, 'logout'])->name('logout')->middleware('auth:api');
     });
 

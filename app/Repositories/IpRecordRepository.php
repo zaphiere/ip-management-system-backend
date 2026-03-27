@@ -21,4 +21,18 @@ class IpRecordRepository implements IpRecordInterface
     {
         $this->model = new IpRecord();
     }
+
+    /**
+     * Search and retrieve list of IP Address records
+     *
+     * @param array<mixed> $input
+     *
+     * @return mixed
+     */
+    public function search(array $input)
+    {
+        $query = $this->model->search($input)->latest();
+
+        return $query->paginate(config('const.pagination_limit'));
+    }
 }
