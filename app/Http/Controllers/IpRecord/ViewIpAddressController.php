@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\IpRecord;
 
 use App\Http\Controllers\Controller;
+use App\Models\IpRecord;
 use App\Http\Requests\IpRecord\IpAddressListRequest;
-use App\Http\Resources\IpRecord\IpAddressCollection;
+use App\Http\Resources\IpRecord\{
+    IpAddressCollection,
+    IpAddressResource,
+};
 use App\Services\IpRecord\ViewIpAddressService;
-use Illuminate\Http\Request;
 
 class ViewIpAddressController extends Controller
 {
@@ -44,8 +47,17 @@ class ViewIpAddressController extends Controller
         return response()->json($ipAddresses);
     }
 
-    public function view()
+    /**
+     * Retrieve single IP Address record
+     *
+     * @param \App\Models\IpRecord $ipRecord
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view(IpRecord $ipRecord)
     {
-        return response()->json('view');
+        $ipAddress = new IpAddressResource($ipRecord);
+
+        return response()->json($ipAddress);
     }
 }

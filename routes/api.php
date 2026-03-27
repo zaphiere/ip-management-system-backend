@@ -67,7 +67,7 @@ Route::prefix('ip-record')
 
         // View Ip Addresses
         Route::get('/', [ViewIpAddressController::class, 'list'])->name('list');
-        Route::get('/view', [ViewIpAddressController::class, 'view'])->name('view');
+        Route::get('/{ipRecord}/view', [ViewIpAddressController::class, 'view'])->name('view');
 
         // Manage Ip Addresses
         Route::post('/create', [ManageIpAddressController::class, 'create'])->name('create');
