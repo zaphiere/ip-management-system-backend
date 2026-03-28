@@ -4,11 +4,13 @@ namespace App\Http\Controllers\IpRecord;
 
 use App\Helpers\JsonResponseHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\IpRecord\CreateIpRecordRequest;
+use App\Http\Requests\IpRecord\{
+    CreateIpRecordRequest,
+    EditIpRecordRequest,
+};
 use App\Http\Resources\IpRecord\IpAddressResource;
 use App\Models\IpRecord;
 use App\Services\IpRecord\ManageIpAddressService;
-use Illuminate\Http\Request;
 
 class ManageIpAddressController extends Controller
 {
@@ -44,9 +46,22 @@ class ManageIpAddressController extends Controller
         return JsonResponseHelper::success($data, 'Created IP Record Successfully');
     }
 
-    public function edit()
+    /**
+     * Edit IP Record
+     *
+     * @param \App\Models\IpRecord $ipRecord
+     * @param \App\Http\Requests\IpRecord\EditIpRecordRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function edit(IpRecord $ipRecord, EditIpRecordRequest $request)
     {
-        return response()->json('edit');
+        $input = $request->validated();
+        $updateIpRecord = $this->manageIpAddressService->update($ipRecord, $input);
+
+        $data = new IpAddressResource($updateIpRecord);
+
+        return JsonResponseHelper::success($data, 'Updated Ip Record Successfully');
     }
 
     /**
@@ -58,8 +73,6 @@ class ManageIpAddressController extends Controller
      */
     public function delete(IpRecord $ipRecord)
     {
-        $this->authorize('update', $ipRecord);
-
         $this->manageIpAddressService->delete($ipRecord);
 
         return JsonResponseHelper::success(null, 'Ip Record Deleted');

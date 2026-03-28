@@ -6,6 +6,7 @@ use App\Enums\{
     Action,
     EntityType,
 };
+use App\Helpers\IpRecordContentHelper;
 use App\Interfaces\IpRecordInterface;
 use App\Models\IpRecord;
 use App\Services\AuditLog\AuditLogService;
@@ -86,6 +87,47 @@ class ManageIpAddressService
     }
 
     /**
+     * Update Ip Record
+     *
+     * @param \App\Models\IpRecord $ipRecord
+     * @param array<mixed> $input
+     *
+     * @return \App\Models\IpRecord
+     */
+    public function update(IpRecord $ipRecord, array $input)
+    {
+        DB::beginTransaction();
+
+        try {
+            // Update Ip Record
+            $oldContent = IpRecordContentHelper::getContent($ipRecord);
+            $input['updated_by'] = Auth::user()->id;
+            $ipRecord->update($input);
+
+            // Create Audit Log
+            $this->auditLogService->createLog(
+                Action::UPDATE_IP,
+                EntityType::IP_ADDRESS,
+                $ipRecord->id,
+                $oldContent,
+                $input,
+            );
+
+            DB::commit();
+
+            return $ipRecord;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            Log::error('Failed to update IP Record', [
+                'error' => $e->getMessage(),
+            ]);
+
+            throw $e;
+        }
+    }
+
+    /**
      * Delete Ip Record
      *
      * @param \App\Models\IpRecord $ipRecord
@@ -96,22 +138,15 @@ class ManageIpAddressService
     {
         DB::beginTransaction();
 
-        $content = $ipRecord->except(
-            'created_by',
-            'updated_by',
-            'created_at',
-            'updated_at',
-            'deleted_at'
-        );
-
         try {
             // Create Audit Log
+            $content = IpRecordContentHelper::getContent($ipRecord);
             $this->auditLogService->createLog(
                 Action::DELETE_IP,
                 EntityType::IP_ADDRESS,
                 $ipRecord->id,
                 $content,
-                null
+                null,
             );
 
             // Delete Ip Record

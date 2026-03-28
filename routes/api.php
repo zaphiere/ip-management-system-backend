@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\{
     ManageAdminUserController,
 };
 use App\Http\Controllers\AuditLog\{
-    AuditLogController,
     IpAuditLogController,
     UserAuditLogController,
 };
@@ -38,9 +37,6 @@ Route::prefix('audit-log')
     ->middleware('auth:api')
     ->group(function () {
 
-        // Create Logs
-        Route::post('/create', [AuditLogController::class, 'create'])->name('create');
-
         // View Logs based on IP Address
         Route::prefix('ip')
         ->name('ip.')
@@ -71,6 +67,10 @@ Route::prefix('ip-record')
 
         // Manage Ip Addresses
         Route::post('/create', [ManageIpAddressController::class, 'create'])->name('create');
-        Route::put('/edit', [ManageIpAddressController::class, 'edit'])->name('edit');
-        Route::delete('/{ipRecord}/delete', [ManageIpAddressController::class, 'delete'])->name('delete');
+        Route::put('/{ipRecord}/edit', [ManageIpAddressController::class, 'edit'])
+            ->middleware('can:update,ipRecord')
+            ->name('edit');
+        Route::delete('/{ipRecord}/delete', [ManageIpAddressController::class, 'delete'])
+            ->middleware('can:delete,ipRecord')
+            ->name('delete');
     });
