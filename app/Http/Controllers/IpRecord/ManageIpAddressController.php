@@ -56,8 +56,6 @@ class ManageIpAddressController extends Controller
      */
     public function edit(IpRecord $ipRecord, EditIpRecordRequest $request)
     {
-        $this->authorize('update', $ipRecord);
-
         $input = $request->validated();
         $updateIpRecord = $this->manageIpAddressService->update($ipRecord, $input);
 
@@ -75,8 +73,6 @@ class ManageIpAddressController extends Controller
      */
     public function delete(IpRecord $ipRecord)
     {
-        $this->authorize('delete', $ipRecord);
-
         $this->manageIpAddressService->delete($ipRecord);
 
         return JsonResponseHelper::success(null, 'Ip Record Deleted');
