@@ -7,17 +7,22 @@ enum Action: string
     /**
      * LOGIN
      */
-    case LOGIN = 'LOGIN'; 
+    case LOGIN = 'LOGIN';
 
     /**
      * LOGOUT
      */
-    case LOGOUT = 'LOGOUT'; 
+    case LOGOUT = 'LOGOUT';
 
     /**
      * CREATE_IP
      */
-    case UPDATE_IP = 'UPDATE_IP'; 
+    case CREATE_IP = 'CREATE_IP';
+
+    /**
+     * UPDATE_IP
+     */
+    case UPDATE_IP = 'UPDATE_IP';
 
     /**
      * DELETE_IP

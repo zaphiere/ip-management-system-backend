@@ -23,6 +23,24 @@ class JsonResponseHelper
     }
 
     /**
+     * Json template for success
+     * Handles resource list
+     *
+     * @param array<mixed> $resource
+     * @param string $message
+     * @param int $code
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public static function successList(array $resource, string $message = 'Success', int $code = 200)
+    {
+        return response()->json(array_merge([
+            'status' => 'success',
+            'message' => $message,
+        ], $resource), $code);
+    }
+
+    /**
      * Json template for error
      *
      * @param mixed $data

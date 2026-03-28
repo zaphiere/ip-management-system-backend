@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\{
     DB,
     Log,
 };
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuditLogService
 {
@@ -69,12 +68,14 @@ class AuditLogService
 
             DB::commit();
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
 
             Log::error('Failed to create audit log', [
                 'error' => $e->getMessage(),
             ]);
+
+            throw $e;
         }
 
     }

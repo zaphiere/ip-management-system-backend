@@ -35,4 +35,16 @@ class IpRecordRepository implements IpRecordInterface
 
         return $query->paginate(config('const.pagination_limit'));
     }
+
+    /**
+     * Store inputs for IP Record
+     *
+     * @param array<mixed> $input
+     *
+     * @return mixed
+     */
+    public function create(array $input)
+    {
+        return $this->model->create($input);
+    }
 }
