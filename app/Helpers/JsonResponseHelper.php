@@ -15,11 +15,16 @@ class JsonResponseHelper
      */
     public static function success($data = null, string $message = 'Success', int $code = 200)
     {
-        return response()->json([
+        $response = [
             'status' => 'success',
             'message' => $message,
-            'data' => $data,
-        ], $code);
+        ];
+
+        if($data) {
+            $response['data'] = $data;
+        }
+
+        return response()->json($response, $code);
     }
 
     /**
@@ -51,11 +56,16 @@ class JsonResponseHelper
      */
     public static function error($data = null, string $message = 'Error', int $code = 400)
     {
-        return response()->json([
+        $response = [
             'status' => 'error',
             'message' => $message,
-            'data' => $data,
-        ], $code);
+        ];
+
+        if($data) {
+            $response['data'] = $data;
+        }
+
+        return response()->json($response, $code);
     }
 
     /**
