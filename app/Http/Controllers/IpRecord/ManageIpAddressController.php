@@ -44,9 +44,16 @@ class ManageIpAddressController extends Controller
         return JsonResponseHelper::success($data, 'Created IP Record Successfully');
     }
 
-    public function edit()
+    public function edit(IpRecord $ipRecord, Request $request)
     {
-        return response()->json('edit');
+        $this->authorize('update', $ipRecord);
+
+        $input = $request->all();
+        $updateIpRecord = $this->manageIpAddressService->update($ipRecord, $input);
+
+        $data = new IpAddressResource($updateIpRecord);
+
+        return JsonResponseHelper::success($data, 'Updated Ip Record Successfully');
     }
 
     /**
@@ -58,7 +65,7 @@ class ManageIpAddressController extends Controller
      */
     public function delete(IpRecord $ipRecord)
     {
-        $this->authorize('update', $ipRecord);
+        $this->authorize('delete', $ipRecord);
 
         $this->manageIpAddressService->delete($ipRecord);
 
