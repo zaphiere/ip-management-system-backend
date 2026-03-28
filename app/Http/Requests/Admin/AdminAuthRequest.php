@@ -3,8 +3,10 @@
 namespace App\Http\Requests\Admin;
 
 use App\Helpers\JsonResponseHelper;
-use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Contracts\Validation\{
+    ValidationRule,
+    Validator,
+};
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 

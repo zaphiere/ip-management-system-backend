@@ -11,7 +11,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class CreateIpRecordRequest extends FormRequest
+class EditIpRecordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,6 +34,8 @@ class CreateIpRecordRequest extends FormRequest
                 'max:45',
                 'ip',
                 Rule::unique('ip_address_records', 'ip_address')
+                    ->ignore($this->route('ipRecord'))
+                    ->whereNull('deleted_at'),
            ],
            'label' => [
                 'required',

@@ -4,11 +4,13 @@ namespace App\Http\Controllers\IpRecord;
 
 use App\Helpers\JsonResponseHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\IpRecord\CreateIpRecordRequest;
+use App\Http\Requests\IpRecord\{
+    CreateIpRecordRequest,
+    EditIpRecordRequest,
+};
 use App\Http\Resources\IpRecord\IpAddressResource;
 use App\Models\IpRecord;
 use App\Services\IpRecord\ManageIpAddressService;
-use Illuminate\Http\Request;
 
 class ManageIpAddressController extends Controller
 {
@@ -44,11 +46,19 @@ class ManageIpAddressController extends Controller
         return JsonResponseHelper::success($data, 'Created IP Record Successfully');
     }
 
-    public function edit(IpRecord $ipRecord, Request $request)
+    /**
+     * Edit IP Record
+     *
+     * @param \App\Models\IpRecord $ipRecord
+     * @param \App\Http\Requests\IpRecord\EditIpRecordRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function edit(IpRecord $ipRecord, EditIpRecordRequest $request)
     {
         $this->authorize('update', $ipRecord);
 
-        $input = $request->all();
+        $input = $request->validated();
         $updateIpRecord = $this->manageIpAddressService->update($ipRecord, $input);
 
         $data = new IpAddressResource($updateIpRecord);

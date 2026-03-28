@@ -11,7 +11,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminAuthRequest;
 use App\Services\Admin\AuthAdminUserService;
 use App\Services\AuditLog\AuditLogService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthAdminUserController extends Controller
