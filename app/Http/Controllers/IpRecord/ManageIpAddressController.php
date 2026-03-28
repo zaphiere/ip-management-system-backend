@@ -6,6 +6,7 @@ use App\Helpers\JsonResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IpRecord\CreateIpRecordRequest;
 use App\Http\Resources\IpRecord\IpAddressResource;
+use App\Models\IpRecord;
 use App\Services\IpRecord\ManageIpAddressService;
 use Illuminate\Http\Request;
 
@@ -48,8 +49,19 @@ class ManageIpAddressController extends Controller
         return response()->json('edit');
     }
 
-    public function delete()
+    /**
+     * Delete Ip Record
+     *
+     * @param \App\Models\IpRecord $ipRecord
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(IpRecord $ipRecord)
     {
-        return response()->json('delete');
+        $this->authorize('update', $ipRecord);
+
+        $this->manageIpAddressService->delete($ipRecord);
+
+        return JsonResponseHelper::success(null, 'Ip Record Deleted');
     }
 }

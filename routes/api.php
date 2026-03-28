@@ -72,5 +72,5 @@ Route::prefix('ip-record')
         // Manage Ip Addresses
         Route::post('/create', [ManageIpAddressController::class, 'create'])->name('create');
         Route::put('/edit', [ManageIpAddressController::class, 'edit'])->name('edit');
-        Route::delete('/delete', [ManageIpAddressController::class, 'delete'])->name('delete');
+        Route::delete('/{ipRecord}/delete', [ManageIpAddressController::class, 'delete'])->name('delete');
     });

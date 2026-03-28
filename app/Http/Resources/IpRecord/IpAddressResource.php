@@ -24,8 +24,8 @@ class IpAddressResource extends JsonResource
             'comment_truncate' => $this->resource->comment
                 ? Str::limit($this->resource->comment, config('const.character_limit'))
                 : '',
-            'can_edit' => AdminAccessHelper::canAccess($this->created_by) ?? 'false',
-            'can_delete' => AdminAccessHelper::canAccess($this->created_by) ?? 'false',
+            'can_edit' => AdminAccessHelper::canEdit($this->created_by) ?? 'false',
+            'can_delete' => AdminAccessHelper::canDelete($this->created_by) ?? 'false',
             'created_at' => $this->created_at->format('Y-m-d H:i:s') ?? '',
         ];
     }
