@@ -14,4 +14,13 @@ interface IpRecordInterface
      * @return mixed
      */
     public function search(array $input);
+
+    /**
+     * Store inputs for IP Record
+     *
+     * @param array<mixed> $input
+     *
+     * @return mixed
+     */
+    public function create(array $input);
 }

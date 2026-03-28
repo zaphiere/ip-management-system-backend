@@ -46,6 +46,8 @@ class AuditLog extends Model
     protected $casts = [
         'action' => Action::class,
         'entity_type' => EntityType::class,
+        'old_content' => 'array',
+        'new_content' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

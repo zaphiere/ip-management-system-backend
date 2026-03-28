@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\IpRecord;
 
+use App\Helpers\JsonResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\IpRecord;
 use App\Http\Requests\IpRecord\IpAddressListRequest;
@@ -37,14 +38,14 @@ class ViewIpAddressController extends Controller
      */
     public function list(IpAddressListRequest $request)
     {
-        $input = $request->all();
+        $input = $request->validated();
         $data = $this->viewIpAddressService->search($input);
 
         $ipAddresses = IpAddressCollection::make($data)
             ->response()
             ->getData(true);
 
-        return response()->json($ipAddresses);
+        return JsonResponseHelper::successList($ipAddresses, 'Retrieved IP Record Lists Successfully');
     }
 
     /**
@@ -58,6 +59,6 @@ class ViewIpAddressController extends Controller
     {
         $ipAddress = new IpAddressResource($ipRecord);
 
-        return response()->json($ipAddress);
+       return JsonResponseHelper::success($ipAddress, 'Retrieved IP Record Successfully');
     }
 }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\IpRecord;
 
+use App\Helpers\JsonResponseHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IpRecord\CreateIpRecordRequest;
+use App\Http\Resources\IpRecord\IpAddressResource;
 use App\Services\IpRecord\ManageIpAddressService;
 use Illuminate\Http\Request;
 
@@ -16,16 +19,28 @@ class ManageIpAddressController extends Controller
     protected ManageIpAddressService $manageIpAddressService;
 
     /**
-     * ManageIpAddressService initialization
+     * Service initialization
      */
     public function __construct(ManageIpAddressService $manageIpAddressService)
     {
         $this->manageIpAddressService = $manageIpAddressService;
     }
 
-    public function create()
+    /**
+     * Create IP Record
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function create(CreateIpRecordRequest $request)
     {
-        return response()->json('create');
+        $input = $request->validated();
+        $ipRecord = $this->manageIpAddressService->store($input);
+
+        $data = new IpAddressResource($ipRecord);
+
+        return JsonResponseHelper::success($data, 'Created IP Record Successfully');
     }
 
     public function edit()
