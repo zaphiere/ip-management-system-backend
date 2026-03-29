@@ -12,6 +12,7 @@ use App\Http\Controllers\IpRecord\{
     ManageIpAddressController,
     ViewIpAddressController,
 };
+use App\Http\Middleware\SuperAdminAccessMiddleware;
 use Illuminate\Support\Facades\Route;
 
 // Authentication Routes
@@ -34,7 +35,7 @@ Route::prefix('users')
 // Audit Log Routes
 Route::prefix('audit-log')
     ->name('audit-log.')
-    ->middleware('auth:api')
+    ->middleware('auth:api', SuperAdminAccessMiddleware::class)
     ->group(function () {
 
         // View Logs based on IP Address
