@@ -14,4 +14,13 @@ interface AuditLogInterface
      * @return mixed
      */
     public function create(array $data);
+
+    /**
+     * Search and retrieve list of audit logs
+     *
+     * @param array<mixed> $input
+     *
+     * @return mixed
+     */
+    public function search(array $input);
 }

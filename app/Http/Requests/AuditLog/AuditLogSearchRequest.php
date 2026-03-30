@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Http\Requests\IpRecord;
+namespace App\Http\Requests\AuditLog;
 
 use App\Helpers\JsonResponseHelper;
+use App\Enums\{
+    Action,
+    EntityType,
+};
 use Illuminate\Contracts\Validation\{
     ValidationRule,
     Validator,
@@ -11,7 +15,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class CreateIpRecordRequest extends FormRequest
+class AuditLogSearchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,26 +33,40 @@ class CreateIpRecordRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'ip_address' => [
-                'required',
-                'max:45',
-                'ip',
-                Rule::unique('ip_address_records', 'ip_address')
-                    ->ignore($this->route('ipRecord'))
-                    ->whereNull('deleted_at'),
-           ],
-           'label' => [
-                'required',
-                'max:100',
-                'string',
-                'regex:/^[A-Za-z0-9 _-]+$/',
-           ],
-           'comment' => [
+            'user_email' => [
                 'nullable',
                 'max:255',
-                'string',
-                'regex:/^[\pL\pN\s\.,;:!?\-()\'"]*$/u',
-           ]
+            ],
+            'session_id' => [
+                'nullable',
+                'max:100',
+            ],
+            'entity_type' => [
+                'nullable',
+                Rule::enum(EntityType::class),
+            ],
+            'entity_ip' => [
+                'nullable',
+                'max:45',
+            ],
+            'entity_user_email' => [
+                'nullable',
+                'max:255',
+            ],
+            'action' => [
+                'nullable',
+                Rule::enum(Action::class),
+            ],
+            'start_date' => [
+                'nullable',
+                'date',
+                'before_or_equal:end_date',
+            ],
+            'end_date' => [
+                'nullable',
+                'date',
+                'after_or_equal:start_date',
+            ],
         ];
     }
 

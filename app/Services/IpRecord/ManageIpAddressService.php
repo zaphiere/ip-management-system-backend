@@ -101,6 +101,7 @@ class ManageIpAddressService
         try {
             // Update Ip Record
             $oldContent = IpRecordContentHelper::getContent($ipRecord);
+            $newContent = $input;
             $input['updated_by'] = Auth::user()->id;
             $ipRecord->update($input);
 
@@ -110,7 +111,7 @@ class ManageIpAddressService
                 EntityType::IP_ADDRESS,
                 $ipRecord->id,
                 $oldContent,
-                $input,
+                $newContent,
             );
 
             DB::commit();
