@@ -53,4 +53,20 @@ class AuditLogRepository implements AuditLogInterface
 
         return $query->paginate(config('const.pagination_limit'));
     }
+
+    /**
+     * Retrieve lists of Session IDs
+     *
+     * @param string $search
+     *
+     * @return mixed
+     */
+    public function getSessionId(string $search)
+    {
+        return $this->model->where('session_id', 'LIKE', '%' . $search . '%')
+            ->limit(config('const.dropdown_limit'))
+            ->distinct()
+            ->orderBy('session_id')
+            ->pluck('session_id');
+    }
 }

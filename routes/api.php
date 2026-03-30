@@ -41,12 +41,15 @@ Route::prefix('audit-log')
         Route::get('/', [ViewAuditLogController::class, 'list'])->name('list');
         Route::get('{auditLog}/view', [ViewAuditLogController::class, 'view'])->name('view');
 
-        // View Logs based on User
+        // Dropdown content
         Route::prefix('options')
         ->name('options.')
         ->group(function () {
-            Route::get('/', [OptionAuditLogController::class, 'list'])->name('list');
-            Route::get('/view', [OptionAuditLogController::class, 'view'])->name('view');
+            Route::get('/get-ip-address', [OptionAuditLogController::class, 'getIp'])->name('getIp');
+            Route::get('/get-email', [OptionAuditLogController::class, 'getEmail'])->name('getEmail');
+            Route::get('/get-session-id', [OptionAuditLogController::class, 'getSessionId'])->name('getSessionId');
+            Route::get('/get-action', [OptionAuditLogController::class, 'getAction'])->name('getAction');
+            Route::get('/get-entity-type', [OptionAuditLogController::class, 'getEntityType'])->name('getEntityType');
         });
 
     });

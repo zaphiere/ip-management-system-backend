@@ -23,4 +23,13 @@ interface AuditLogInterface
      * @return mixed
      */
     public function search(array $input);
+
+    /**
+     * Retrieve lists of Session IDs
+     *
+     * @param string $search
+     *
+     * @return mixed
+     */
+    public function getSessionId(string $search);
 }

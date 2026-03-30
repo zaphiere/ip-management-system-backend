@@ -47,4 +47,19 @@ class IpRecordRepository implements IpRecordInterface
     {
         return $this->model->create($input);
     }
+
+    /**
+     * Return lists of Ip Addresses
+     *
+     * @param string $search
+     *
+     * @return mixed
+     */
+    public function getIp(string $search)
+    {
+        return $this->model->where('ip_address', 'LIKE', '%' . $search . '%')
+            ->limit(config('const.dropdown_limit'))
+            ->orderBy('ip_address')
+            ->pluck('ip_address');
+    }
 }
