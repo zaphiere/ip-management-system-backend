@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\AuditLog;
 
 use App\Helpers\JsonResponseHelper;
+use App\Http\Requests\AuditLog\AuditLogSearchRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuditLog\AuditLogCollection;
 use App\Services\AuditLog\ViewAuditLogService;
-use Illuminate\Http\Request;
 
 class ViewAuditLogController extends Controller
 {
@@ -28,11 +28,11 @@ class ViewAuditLogController extends Controller
     /**
      * Retrieve Audit Log List (Only accessible with SUPER_ADMIN role)
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\AuditLog\AuditLogSearchRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function list(Request $request)
+    public function list(AuditLogSearchRequest $request)
     {
         $input = $request->all();
         $data = $this->viewAuditLogService->search($input);

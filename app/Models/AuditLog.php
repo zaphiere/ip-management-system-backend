@@ -10,7 +10,7 @@ use App\Models\{
     IpRecord,
     User,
 };
-use Carbon\Traits\Timestamp;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\{
     Builder,
@@ -96,8 +96,10 @@ class AuditLog extends Model
      */
     public function scopeSearch(Builder $query, array $search)
     {
-        if (isset($search['user_id'])) {
-            $query->where('user_id', $search['user_id']);
+        if (isset($search['user_email'])) {
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('email', 'LIKE', '%' . $search['user_email'] . '%');
+            });
         }
 
         if (isset($search['session_id'])) {
@@ -108,8 +110,22 @@ class AuditLog extends Model
             $query->where('entity_type', $search['entity_type']);
         }
 
-        if (isset($search['entity_id'])) {
-            $query->whereIn('entity_id', $search['entity_id']);
+        if (isset($search['entity_ip'])) {
+            $query->where('entity_type', EntityType::IP_ADDRESS)
+                ->where(function ($q) use ($search) {
+                    $q->whereHas('IpEntity', fn($rel) =>
+                        $rel->where('ip_address', 'LIKE', '%' . $search['entity_ip'] . '%')
+                    )
+                    ->orWhere('old_content->ip_address', 'LIKE', '%' . $search['entity_ip'] . '%')
+                    ->orWhere('new_content->ip_address', 'LIKE', '%' . $search['entity_ip'] . '%');
+                });
+        }
+
+        if (isset($search['entity_user_email'])) {
+            $query->where('entity_type', EntityType::USER)
+                ->whereHas('userEntity', function ($q) use ($search) {
+                    $q->where('email', 'LIKE', '%' . $search['entity_user_email'] . '%');
+                });
         }
 
         if (isset($search['action'])) {
@@ -117,8 +133,9 @@ class AuditLog extends Model
         }
 
         if (isset($search['start_date']) && isset($search['end_date'])) {
-            $query->where('created_at', '>=', $search['start_date'])
-                ->where('created_at', '<=', $search['end_date']);
+            $start = Carbon::parse($search['start_date'])->startOfDay();
+            $end = Carbon::parse($search['end_date'])->endOfDay();
+            $query->whereBetween('created_at', [$start, $end]);
         }
 
         return $query;
