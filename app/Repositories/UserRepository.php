@@ -21,4 +21,19 @@ class UserRepository implements UserInterface
     {
         $this->model = new User();
     }
+
+    /**
+     * Retrieve lists of User Emails
+     *
+     * @param string $search
+     *
+     * @return mixed
+     */
+    public function getEmail(string $search)
+    {
+        return $this->model->where('email', 'LIKE', '%' . $search . '%')
+            ->limit(config('const.dropdown_limit'))
+            ->orderBy('email')
+            ->pluck('email');
+    }
 }

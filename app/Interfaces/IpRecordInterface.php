@@ -23,4 +23,13 @@ interface IpRecordInterface
      * @return mixed
      */
     public function create(array $input);
+
+    /**
+     * Return lists of Ip Addresses
+     *
+     * @param string $search
+     *
+     * @return mixed
+     */
+    public function getIp(string $search);
 }
