@@ -5,8 +5,8 @@ use App\Http\Controllers\Admin\{
     ManageAdminUserController,
 };
 use App\Http\Controllers\AuditLog\{
-    IpAuditLogController,
-    UserAuditLogController,
+    ViewAuditLogController,
+    OptionAuditLogController,
 };
 use App\Http\Controllers\IpRecord\{
     ManageIpAddressController,
@@ -38,20 +38,15 @@ Route::prefix('audit-log')
     ->middleware('auth:api', SuperAdminAccessMiddleware::class)
     ->group(function () {
 
-        // View Logs based on IP Address
-        Route::prefix('ip')
-        ->name('ip.')
-        ->group(function () {
-            Route::get('/', [IpAuditLogController::class, 'list'])->name('list');
-            Route::get('/view', [IpAuditLogController::class, 'view'])->name('view');
-        });
+        Route::get('/', [ViewAuditLogController::class, 'list'])->name('list');
+        Route::get('/view', [ViewAuditLogController::class, 'view'])->name('view');
 
         // View Logs based on User
-        Route::prefix('user')
-        ->name('user.')
+        Route::prefix('options')
+        ->name('options.')
         ->group(function () {
-            Route::get('/', [UserAuditLogController::class, 'list'])->name('list');
-            Route::get('/view', [UserAuditLogController::class, 'view'])->name('view');
+            Route::get('/', [OptionAuditLogController::class, 'list'])->name('list');
+            Route::get('/view', [OptionAuditLogController::class, 'view'])->name('view');
         });
 
     });

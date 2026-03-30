@@ -33,4 +33,24 @@ class AuditLogRepository implements AuditLogInterface
     {
         return $this->model->create($data);
     }
+
+    /**
+     * Search and retrieve list of audit logs
+     *
+     * @param array<mixed> $input
+     *
+     * @return mixed
+     */
+    public function search(array $input)
+    {
+        $query = $this->model
+            ->with([
+                'ipEntity:id,ip_address',
+                'userEntity:id,email',
+            ])
+            ->search($input)
+            ->latest();
+
+        return $query->paginate(config('const.pagination_limit'));
+    }
 }

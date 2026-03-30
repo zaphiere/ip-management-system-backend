@@ -2,7 +2,7 @@
 
 namespace App\Services\AuditLog;
 
-class UserAuditLogService
+class OptionAuditLogService
 {
 
 }

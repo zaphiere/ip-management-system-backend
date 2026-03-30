@@ -32,4 +32,16 @@ class ViewIpAddressService
     {
         return $this->ipRecordInterface->search($input);
     }
+
+    /**
+     * Retrieve IP Address based on ID
+     *
+     * @param int $id
+     *
+     * @return mixed
+     */
+    public function findIpAddressById(int $id)
+    {
+        return $this->findIpAddressById($id);
+    }
 }
