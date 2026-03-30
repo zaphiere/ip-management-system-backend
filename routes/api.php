@@ -39,7 +39,7 @@ Route::prefix('audit-log')
     ->group(function () {
 
         Route::get('/', [ViewAuditLogController::class, 'list'])->name('list');
-        Route::get('/view', [ViewAuditLogController::class, 'view'])->name('view');
+        Route::get('{auditLog}/view', [ViewAuditLogController::class, 'view'])->name('view');
 
         // View Logs based on User
         Route::prefix('options')
