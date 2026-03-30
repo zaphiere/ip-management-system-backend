@@ -12,6 +12,7 @@ use App\Http\Requests\Admin\AdminAuthRequest;
 use App\Services\Admin\AuthAdminUserService;
 use App\Services\AuditLog\AuditLogService;
 use Illuminate\Support\Facades\Auth;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthAdminUserController extends Controller
 {
@@ -93,10 +94,12 @@ class AuthAdminUserController extends Controller
      */
     public function refresh()
     {
+        $token = JWTAuth::refresh(JWTAuth::getToken());
         return JsonResponseHelper::success([
             'authorization' => [
-                'token' => Auth::refresh(),
+                'token' => $token,
                 'type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL()*60,
             ]
         ]);
     }
