@@ -34,7 +34,7 @@ class ViewAuditLogController extends Controller
      */
     public function list(AuditLogSearchRequest $request)
     {
-        $input = $request->all();
+        $input = $request->validated();
         $data = $this->viewAuditLogService->search($input);
 
         $auditlogs = AuditLogCollection::make($data)
