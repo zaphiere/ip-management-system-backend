@@ -5,7 +5,11 @@ namespace App\Http\Controllers\AuditLog;
 use App\Helpers\JsonResponseHelper;
 use App\Http\Requests\AuditLog\AuditLogSearchRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AuditLog\AuditLogCollection;
+use App\Http\Resources\AuditLog\{
+    AuditLogCollection,
+    AuditLogResource,
+};
+use App\Models\AuditLog;
 use App\Services\AuditLog\ViewAuditLogService;
 
 class ViewAuditLogController extends Controller
@@ -44,8 +48,17 @@ class ViewAuditLogController extends Controller
         return JsonResponseHelper::successList($auditlogs, 'Retrieved Audit Logs List Successfully');
     }
 
-    public function view()
+    /**
+     * Retrieve single Audit Log Entry
+     *
+     * @param \App\Models\AuditLog $auditLog
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view(AuditLog $auditLog)
     {
-        return response()->json('view');
+        $auditLogRecord = new AuditLogResource($auditLog);
+
+        return JsonResponseHelper::success($auditLogRecord);
     }
 }
