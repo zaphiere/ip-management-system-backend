@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\JsonResponseHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\CreateAdminUserRequest;
 use App\Services\Admin\ManageAdminUserService;
-use Illuminate\Http\Request;
 
 class ManageAdminUserController extends Controller
 {
@@ -23,8 +24,18 @@ class ManageAdminUserController extends Controller
         $this->manageAdminUserService = $manageAdminUserService;
     }
 
-    public function create()
+    /**
+     * Create new Admin User Account
+     *
+     * @param \App\Http\Requests\Admin\CreateAdminUserRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function create(CreateAdminUserRequest $request)
     {
-        return response()->json('Register');
+        $input = $request->validated();
+        $data = $this->manageAdminUserService->create($input);
+
+        return JsonResponseHelper::success($data, 'User Creation Success');
     }
 }

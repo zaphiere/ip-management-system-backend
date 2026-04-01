@@ -27,7 +27,7 @@ Route::prefix('')
 // Manage Admin Accounts Routes
 Route::prefix('users')
     ->name('users.')
-    ->middleware('auth:api')
+    ->middleware('auth:api', SuperAdminAccessMiddleware::class)
     ->group(function () {
         Route::post('/create', [ManageAdminUserController::class, 'create'])->name('create');
     });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\Role;
 use App\Helpers\JsonResponseHelper;
 use Illuminate\Contracts\Validation\{
     ValidationRule,
@@ -9,8 +10,10 @@ use Illuminate\Contracts\Validation\{
 };
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
-class AdminAuthRequest extends FormRequest
+class CreateAdminUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,10 +35,20 @@ class AdminAuthRequest extends FormRequest
                 'required',
                 'max:255',
                 'email:rfc,dns',
+                Rule::unique('users', 'email')
+                    ->whereNull('deleted_at'),
             ],
             'password' => [
                 'required',
-                'min:6',
+                Password::min(6)
+                    ->max(24)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+            ],
+            'role' => [
+                'required',
+                Rule::enum(Role::class),
             ],
         ];
     }

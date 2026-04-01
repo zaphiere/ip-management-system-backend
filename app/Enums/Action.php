@@ -20,6 +20,11 @@ enum Action: string
     case CREATE_IP = 'CREATE_IP';
 
     /**
+     * CREATE_USER
+     */
+    case CREATE_USER = 'CREATE_USER';
+
+    /**
      * UPDATE_IP
      */
     case UPDATE_IP = 'UPDATE_IP';

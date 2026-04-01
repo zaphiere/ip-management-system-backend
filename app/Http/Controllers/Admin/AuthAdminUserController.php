@@ -95,6 +95,7 @@ class AuthAdminUserController extends Controller
     public function refresh()
     {
         $token = JWTAuth::refresh(JWTAuth::getToken());
+
         return JsonResponseHelper::success([
             'authorization' => [
                 'token' => $token,

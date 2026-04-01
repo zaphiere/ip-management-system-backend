@@ -36,4 +36,17 @@ class UserRepository implements UserInterface
             ->orderBy('email')
             ->pluck('email');
     }
+
+    /**
+     * Create new user account
+     *
+     * @param array<mixed> $input
+     *
+     * @return mixed
+     */
+    public function create(array $input)
+    {
+        return $this->model->create($input);
+    }
+
 }
