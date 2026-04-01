@@ -14,4 +14,13 @@ interface UserInterface
      * @return mixed
      */
     public function getEmail(string $search);
+
+    /**
+     * Create new User account
+     *
+     * @param array<mixed> $input
+     *
+     * @return mixed
+     */
+    public function create(array $input);
 }
