@@ -36,7 +36,6 @@ class CreateAdminUserRequest extends FormRequest
                 'max:255',
                 'email:rfc,dns',
                 Rule::unique('users', 'email')
-                    ->ignore($this->route('users'))
                     ->whereNull('deleted_at'),
             ],
             'password' => [

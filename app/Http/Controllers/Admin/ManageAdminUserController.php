@@ -6,7 +6,6 @@ use App\Helpers\JsonResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateAdminUserRequest;
 use App\Services\Admin\ManageAdminUserService;
-use Illuminate\Http\Request;
 
 class ManageAdminUserController extends Controller
 {
@@ -27,6 +26,10 @@ class ManageAdminUserController extends Controller
 
     /**
      * Create new Admin User Account
+     *
+     * @param \App\Http\Requests\Admin\CreateAdminUserRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create(CreateAdminUserRequest $request)
     {
